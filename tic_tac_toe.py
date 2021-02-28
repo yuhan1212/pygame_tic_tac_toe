@@ -96,3 +96,66 @@ def draw_status():
     text_rect = text.get_rect(center=(_SQUARE / 2, _SQUARE + _STATUS_HEIGHT / 2))
     screen.blit(text, text_rect)
     pg.display.update()
+
+
+def check_result():
+    global TTT, winner, draw
+
+    # check for winning rows
+    for row in range (_TTT_SIDE):
+        if TTT[row][0] == None:
+            continue
+        check = TTT[row][0]
+        for col in range(1, _TTT_SIDE):
+            if TTT [row][col] != check:
+                break
+            if col == _TTT_SIDE - 1:
+                # this row won
+                winner = TTT[row][0]
+                pg.draw.line(screen, (250,0,0),\
+                    (_MARGIN, row * _BOX_Length + _MARGIN * 2),\
+                    (_SQUARE - _MARGIN, row * _BOX_Length + _MARGIN * 2), 4)
+
+
+    # check for winning rows
+    for col in range (_TTT_SIDE):
+        if TTT[0][col] == None:
+            continue
+        check = TTT[0][col]
+        for row in range(1, _TTT_SIDE):
+            if TTT [row][col] != check:
+                break
+            if row == _TTT_SIDE - 1:
+                # this col won
+                winner = TTT[0][col]
+                pg.draw.line(screen, (250,0,0),\
+                (col* _BOX_Length + _MARGIN * 2, _MARGIN),\
+                (col * _BOX_Length + _MARGIN * 2, _SQUARE - _MARGIN), 4)
+
+    # check for diagonal winners
+    if TTT[0][0] != None:
+        check = TTT[0][0]
+        for i in range (1, _TTT_SIDE, 1):
+            if TTT[i][i] != check:
+                break
+            if i == _TTT_SIDE - 1:
+                # this diagonal won
+                winner = TTT[0][0]
+                pg.draw.line(screen, (250,0,0), (_MARGIN, _MARGIN),\
+                                  (_SQUARE - _MARGIN, _SQUARE - _MARGIN), 4)              
+
+    if TTT[0][_TTT_SIDE - 1] != None:
+        check = TTT[0][_TTT_SIDE - 1]
+        for i in range (1, _TTT_SIDE, 1):
+            if TTT[i][_TTT_SIDE - i - 1] != check:
+                break
+            if i == _TTT_SIDE - 1:
+                # this diagonal won
+                winner = TTT[0][_TTT_SIDE - 1]
+                pg.draw.line(screen, (250,0,0), (_SQUARE - _MARGIN, _MARGIN),\
+                                  (_MARGIN, _SQUARE - _MARGIN), 4)
+       
+    if(all([all(row) for row in TTT]) and winner is None ):
+        draw = True
+
+    draw_status()
