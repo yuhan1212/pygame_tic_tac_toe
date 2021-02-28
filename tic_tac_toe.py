@@ -159,3 +159,45 @@ def check_result():
         draw = True
 
     draw_status()
+
+
+def drawXO(row, col):
+    global TTT, OX_symbol
+
+    posx: float = _BOX_Length * row + _MARGIN / 2
+    posy: float = _BOX_Length * col + _MARGIN / 2
+    TTT[row][col] = OX_symbol
+    if(OX_symbol == 'X'):
+        screen.blit(x_img,(posy, posx))
+        OX_symbol= 'O'
+    else:
+        screen.blit(o_img,(posy, posx))
+        OX_symbol= 'X'
+    pg.display.update()
+    print(TTT)
+    
+
+def userClick():
+    # get coordinates of mouse click
+    x, y = pg.mouse.get_pos()
+
+    # get column of mouse click
+    i = 0
+    while x > _BOX_Length * i + _BOX_Length:
+        i += 1
+    col = i
+
+    # get row of mouse click
+    i = 0
+    if y > _SQUARE:
+        return
+    while y > _BOX_Length * i + _BOX_Length:
+        i += 1
+    row = i
+
+    # print(row,col)
+    if TTT[row][col] is None:
+        global OX_symbol
+        #draw the x or o on screen
+        drawXO(row, col)
+        check_result()
