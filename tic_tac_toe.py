@@ -201,3 +201,32 @@ def userClick():
         #draw the x or o on screen
         drawXO(row, col)
         check_result()
+
+
+def reset_game():
+    global TTT, winner, OX_symbol, draw
+    time.sleep(2)
+    TTT = []
+    for i in range (_TTT_SIDE):
+        TTT += [[None] * _TTT_SIDE]
+    OX_symbol = 'O'
+    draw = False
+    winner = None
+    game_opening()
+    
+    
+game_opening()
+
+# run the game loop forever
+while(True):
+    for event in pg.event.get():
+        if event.type == QUIT:
+            pg.quit()
+            sys.exit()
+        elif event.type == MOUSEBUTTONDOWN:
+            # the user clicked; place an O or X
+            userClick()
+            if(winner or draw):
+                reset_game()
+            
+    pg.display.update()
